@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<script>
+    $(document).ready(function(){
+        $("#search").click(function(){
+            let obj={
+                type:"get",
+                url:"/fetch-client",
+                    data:{
+                        x:$("#email").val(),
+                    }
+            }
+            $.ajax(obj).then(function(responseInJsonAry){
+                if(responseInJsonAry.length==0){
+                        resp.send("invalid email");
+                    }else{
+                        alert(responseInJsonAry);
+                        $("#name").val(responseInJsonAry[0].name);
+                        $("#business").val(responseInJsonAry[0].business);
+                        $("#bprofile").val(responseInJsonAry[0].bprofile);
+                        $("#address").val(responseInJsonAry[0].address);
+                        $("#city").val(responseInJsonAry[0].city);
+                        $("#contact").val(responseInJsonAry[0].contact);
+                        $("#idproof").val(responseInJsonAry[0].idproof);
+                        $("#idpnumber").val(responseInJsonAry[0].idpnumber);
+                        $("#info").val(responseInJsonAry[0].info);
+
+                    }
+            }).fail(function(err)
+                {
+                    resp.send(err.message);
+                })
+        })
+    });
+</script>
+<body class="container mt-5">
+    <h2 class="text-center">Client Profile</h2>
+    <div id="message" class="alert alert-success d-none"></div>
+    <form id="clientForm" action="/save-client" method="POST">
+        <div class="mb-3">
+            <label class="form-label">Email (Client ID)</label>
+            <div class="input-group">
+                <input type="email" name="email" id="email" class="form-control" required>
+                <input type="button" value="Search" class="btn btn-primary" id="search">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" name="name" id="name" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Firm/Business</label>
+            <input type="text" name="business" id="business" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Business Profile</label>
+            <input type="text" name="bprofile" id="bprofile" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Address</label>
+            <input type="text" name="address" id="address" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">City</label>
+            <input type="text" name="city" id="city" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Contact</label>
+            <input type="text" name="contact" id="contact" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">ID Proof</label>
+            <select name="idproof" id="idproof" class="form-select">
+                <option value="Aadhar">Aadhar</option>
+                <option value="Driving License">Driving License</option>
+                <option value="PAN Card">PAN Card</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">ID Number</label>
+            <input type="text" name="idpnumber" id="idpnumber" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Other Info</label>
+            <textarea name="info" id="info" class="form-control"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+        <input type="submit" class="btn btn-warning" id="change" value="Change" formaction="/client-update">
+    </form>
+
+    
+
+</body>
+</html>
